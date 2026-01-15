@@ -6,11 +6,21 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
+import java.util.Locale
 
 interface MealApi {
     @GET("search.php")
     suspend fun searchMeals(@Query("s") query: String): MealsResponse
+
+    @GET("categories.php")
+    suspend fun getCategories(): CategoryResponse
+
+    @GET("list.php")
+    suspend fun getArea(): AreaResponse
 }
+
+//www.themealdb.com/api/json/v1/1/list.php?a=list
+//www.themealdb.com/api/json/v1/1/list.php?i=list
 
 object MealApiFactory {
     private val logging = HttpLoggingInterceptor().apply {
