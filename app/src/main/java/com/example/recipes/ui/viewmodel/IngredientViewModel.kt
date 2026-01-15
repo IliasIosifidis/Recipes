@@ -2,17 +2,17 @@ package com.example.recipes.ui.viewmodel
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.recipes.data.Category
-import com.example.recipes.data.MealApi
+import com.example.recipes.data.Ingredients
 import com.example.recipes.data.MealApiFactory
 import kotlinx.coroutines.launch
 
-class CategoryViewModel: ViewModel() {
+class IngredientViewModel : ViewModel(){
 
-    var categories by mutableStateOf<List<Category>>(emptyList())
+    var ingredients by mutableStateOf<List<Ingredients>>(emptyList())
         private set
 
     var isLoading by mutableStateOf(false)
@@ -21,25 +21,24 @@ class CategoryViewModel: ViewModel() {
     var errorMessage by mutableStateOf<String?>(null)
         private set
 
-    fun getCategories(){
+    fun getIngredients(){
         isLoading = true
         errorMessage = null
 
         viewModelScope.launch {
             try {
-                val res = MealApiFactory.api.getCategories()
-                categories = res.categories
+                val res = MealApiFactory.api.getIngredients()
+                ingredients = res.meals
             } catch (e: Exception){
                 errorMessage = e.message
-                categories = emptyList()
+                ingredients = emptyList()
             } finally {
                 isLoading = false
             }
         }
     }
 
-    fun clearCategories(){
-        categories = emptyList()
+    fun clearIngredients(){
+        ingredients = emptyList()
     }
-
 }

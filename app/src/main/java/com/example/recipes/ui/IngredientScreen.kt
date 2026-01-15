@@ -3,7 +3,6 @@ package com.example.recipes.ui
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -22,44 +21,42 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.recipes.ui.viewmodel.AreaViewModel
+import com.example.recipes.ui.viewmodel.IngredientViewModel
 
 @Composable
-fun AreaScreen(
+fun IngredientScreen(
     modifier: Modifier,
     padding: PaddingValues,
-    vm: AreaViewModel = viewModel()
+    vm: IngredientViewModel = viewModel()
 ) {
-    var showArea by remember { mutableStateOf(false) }
-    val areas = vm.areas.orEmpty()
+    var showIngredients by remember { mutableStateOf(false) }
 
     Button(
         modifier = Modifier.padding(16.dp),
         onClick = {
-            showArea = !showArea
-            if (showArea && areas.isEmpty() && !vm.isLoading){
-                vm.getAreas()
-            } else {
-                vm.clearArea()
+            showIngredients = !showIngredients
+            if (showIngredients && vm.ingredients.isEmpty() && !vm.isLoading){
+                vm.getIngredients()
             }
-        }) {
-        Text(text = if (showArea) "Hide Areas" else "Show Areas")
+            else {
+                vm.clearIngredients()
+            }
+        }
+    ) {
+        Text(if (showIngredients) "Hide Ingredients" else "Show Ingredients")
     }
 
-    if (showArea){
-        when {
-            vm.isLoading -> Text(text= "Areas are loading")
-            vm.errorMessage != null -> Text(
+    if (showIngredients){
+        when{
+            vm.isLoading -> Text("Loading Ingredients")
+            vm.errorMessage !=null -> Text(
                 text = "Error ${vm.errorMessage}",
-                color = MaterialTheme.colorScheme.error
-            )
+                color = MaterialTheme.colorScheme.error)
             else -> LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(8.dp)
+                contentPadding = PaddingValues(vertical = 8.dp)
             ) {
-                items(items = vm.areas){ area ->
-                    AreaRow(area.strArea ?: "Unknown Area")
-
+                items(vm.ingredients){ingred ->
+                    IngredientsRow(title = ingred.strIngredient)
                 }
             }
         }
@@ -67,20 +64,22 @@ fun AreaScreen(
 }
 
 @Composable
-private fun AreaRow(title: String){
-    Card(modifier = Modifier
-        .padding(horizontal = 16.dp)
-        .fillMaxWidth()
-        .padding(vertical = 4.dp)
-        .clickable(onClick = {}),
+fun IngredientsRow(title: String) {
+    Card(
+        modifier = Modifier
+            .padding(horizontal = 16.dp)
+            .fillMaxWidth()
+            .padding(vertical = 4.dp)
+            .clickable(onClick = {}),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
-        Row(modifier = Modifier,
-            verticalAlignment = Alignment.CenterVertically
-        ) {Text(
-            text = title,
-            modifier = Modifier.padding(16.dp),
-            style = MaterialTheme.typography.titleMedium
-        ) }
+        Row(verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = title,
+                modifier = Modifier.padding(16.dp),
+                style = MaterialTheme.typography.titleMedium
+            )
+        }
     }
 }

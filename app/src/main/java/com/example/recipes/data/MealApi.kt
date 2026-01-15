@@ -16,10 +16,12 @@ interface MealApi {
     suspend fun getCategories(): CategoryResponse
 
     @GET("list.php")
-    suspend fun getArea(): AreaResponse
+    suspend fun getArea(@Query("a") a: String = "list"): AreaResponse
+
+    @GET("list.php")
+    suspend fun getIngredients(@Query ("i") i : String = "list"): IngredientsResponse
 }
 
-//www.themealdb.com/api/json/v1/1/list.php?a=list
 //www.themealdb.com/api/json/v1/1/list.php?i=list
 
 object MealApiFactory {

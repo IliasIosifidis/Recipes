@@ -43,7 +43,7 @@ fun CategoriesScreen(
             }
             else { vm.clearCategories()}
         }) {
-            Text(if (showCategories)" Hide categories" else "Show categories")
+            Text(if (showCategories)"Hide categories" else "Show categories")
        }
 
     if(showCategories){
@@ -62,27 +62,6 @@ fun CategoriesScreen(
             }
         }
     }
-
-    Column(
-        modifier = Modifier
-            .padding(padding)
-            .padding(16.dp)
-    ) {
-        Text(
-            text = "Categories",
-            style = MaterialTheme.typography.headlineMedium
-        )
-        Spacer(modifier = Modifier.padding(vertical = 10.dp))
-
-        LazyColumn(
-            modifier = Modifier.padding(horizontal = 16.dp),
-            contentPadding = PaddingValues(vertical = 8.dp),
-        ) {
-            items(vm.categories){ cat ->
-                CategoryRow(title = cat.strCategory ?: "Unknown Category")
-            }
-        }
-    }
 }
 
 @Composable
@@ -95,9 +74,7 @@ private fun CategoryRow(title: String){
             .clickable(onClick = {}),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ){
-        Row(modifier = Modifier
-            .padding(),
-            verticalAlignment = Alignment.CenterVertically
+        Row(verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
                 text = title,
@@ -105,6 +82,5 @@ private fun CategoryRow(title: String){
                 style = MaterialTheme.typography.titleMedium
             )
         }
-
     }
 }

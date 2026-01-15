@@ -12,7 +12,7 @@ import java.lang.Exception
 
 class AreaViewModel: ViewModel() {
 
-    var areas by mutableStateOf<List<Area>?>(emptyList())
+    var areas by mutableStateOf<List<Area>>(emptyList())
         private set
 
     var isLoading by mutableStateOf(false)
@@ -27,8 +27,8 @@ class AreaViewModel: ViewModel() {
 
         viewModelScope.launch {
             try {
-                var res = MealApiFactory.api.getArea()
-                areas = res.area
+                val res = MealApiFactory.api.getArea()
+                areas = res.meals ?: emptyList()
             } catch (e: Exception) {
                 errorMessage = e.message
                 areas = emptyList()

@@ -28,6 +28,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.recipes.data.MealApiFactory
 import com.example.recipes.ui.AreaScreen
 import com.example.recipes.ui.CategoriesScreen
+import com.example.recipes.ui.IngredientScreen
 import com.example.recipes.ui.RecipesScreen
 import com.example.recipes.ui.theme.RecipesTheme
 import kotlinx.coroutines.launch
@@ -66,6 +67,11 @@ class MainActivity : ComponentActivity() {
                         )
                         Divider()
                         AreaScreen(
+                            modifier = Modifier.fillMaxWidth(),
+                            padding = PaddingValues(1.dp)
+                        )
+                        Divider()
+                        IngredientScreen(
                             modifier = Modifier.fillMaxWidth(),
                             padding = PaddingValues(1.dp)
                         )
