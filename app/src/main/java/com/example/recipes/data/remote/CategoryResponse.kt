@@ -1,8 +1,4 @@
-package com.example.recipes.data
-
-import android.accessibilityservice.GestureDescription
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+package com.example.recipes.data.remote
 
 
 data class CategoryResponse(

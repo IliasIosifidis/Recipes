@@ -5,9 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.recipes.data.Category
-import com.example.recipes.data.MealApi
-import com.example.recipes.data.MealApiFactory
+import com.example.recipes.data.remote.Category
+import com.example.recipes.data.remote.MealApiFactory
 import kotlinx.coroutines.launch
 
 class CategoryViewModel: ViewModel() {

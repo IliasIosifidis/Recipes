@@ -2,12 +2,11 @@ package com.example.recipes.ui.viewmodel
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.recipes.data.Ingredients
-import com.example.recipes.data.MealApiFactory
+import com.example.recipes.data.remote.Ingredients
+import com.example.recipes.data.remote.MealApiFactory
 import kotlinx.coroutines.launch
 
 class IngredientViewModel : ViewModel(){

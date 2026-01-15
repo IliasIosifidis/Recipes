@@ -1,4 +1,4 @@
-package com.example.recipes.data
+package com.example.recipes.data.remote
 
 data class IngredientsResponse(
     val meals: List<Ingredients>

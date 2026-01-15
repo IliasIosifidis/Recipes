@@ -4,34 +4,24 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
-import androidx.lifecycle.lifecycleScope
-import com.example.recipes.data.MealApiFactory
-import com.example.recipes.ui.AreaScreen
+import androidx.compose.ui.text.style.TextAlign
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.recipes.data.remote.Ingredients
 import com.example.recipes.ui.CategoriesScreen
-import com.example.recipes.ui.IngredientScreen
-import com.example.recipes.ui.RecipesScreen
+import com.example.recipes.ui.HomeScreen
 import com.example.recipes.ui.theme.RecipesTheme
-import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
@@ -40,6 +30,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             RecipesTheme {
+                val navController = rememberNavController()
+
                 Scaffold(
                     topBar = {
                         TopAppBar(
@@ -47,37 +39,43 @@ class MainActivity : ComponentActivity() {
                                 containerColor = MaterialTheme.colorScheme.primary,
                                 titleContentColor = MaterialTheme.colorScheme.onPrimary
                             ),
-                            title = { Text("Recipes") },
+                            title = { Text(
+                                text = "Home Screen",
+                                textAlign = TextAlign.Center) },
                         )
                     },
                     containerColor = MaterialTheme.colorScheme.background
                 ) { innerPadding ->
-                    Column(modifier = Modifier
-                        .fillMaxSize()
-                        .padding(innerPadding)
+                    NavHost(
+                        navController = navController,
+                        startDestination = Routes.HOME,
+                        modifier = Modifier.padding(innerPadding)
                     ) {
-                        RecipesScreen(
-                            modifier = Modifier.fillMaxWidth(),
-                            padding = PaddingValues(1.dp)
-                        )
-                        Divider()
-                        CategoriesScreen(
-                            modifier = Modifier.fillMaxWidth(),
-                            padding = PaddingValues(1.dp)
-                        )
-                        Divider()
-                        AreaScreen(
-                            modifier = Modifier.fillMaxWidth(),
-                            padding = PaddingValues(1.dp)
-                        )
-                        Divider()
-                        IngredientScreen(
-                            modifier = Modifier.fillMaxWidth(),
-                            padding = PaddingValues(1.dp)
-                        )
+                        composable(Routes.HOME) {
+                            HomeScreen(
+                                onShowCategories = {
+                                    navController.navigate(Routes.CATEGORIES)
+                                },
+                                onShowIngredients = {
+                                    navController.navigate(Routes.INGREDIENTS)
+                                }
+                            )
+                        }
+                        composable(Routes.CATEGORIES) {
+                            CategoriesScreen(modifier = Modifier, padding = PaddingValues())
+                        }
+                        composable(Routes.INGREDIENTS) {
+                            CategoriesScreen(modifier = Modifier, padding = PaddingValues())
+                        }
                     }
                 }
             }
         }
     }
+}
+
+object Routes {
+    const val HOME = "home"
+    const val CATEGORIES = "categories"
+    const val INGREDIENTS = "ingredients"
 }

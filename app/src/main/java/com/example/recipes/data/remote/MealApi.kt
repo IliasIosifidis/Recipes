@@ -1,4 +1,4 @@
-package com.example.recipes.data
+package com.example.recipes.data.remote
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -6,7 +6,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
-import java.util.Locale
 
 interface MealApi {
     @GET("search.php")
@@ -20,6 +19,9 @@ interface MealApi {
 
     @GET("list.php")
     suspend fun getIngredients(@Query ("i") i : String = "list"): IngredientsResponse
+
+    @GET("filter.php")
+    suspend fun filterByCategory(@Query("c") category: String): MealsFilterResponse
 }
 
 //www.themealdb.com/api/json/v1/1/list.php?i=list
