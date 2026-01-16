@@ -23,12 +23,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import com.example.recipes.Routes
 import com.example.recipes.ui.viewmodel.CategoryMealsViewModel
 
 @Composable
 fun CategoryFilterScreen(
     category: String,
-    vm: CategoryMealsViewModel = viewModel()
+    vm: CategoryMealsViewModel = viewModel(),
+    navController: NavHostController
 ){
     LaunchedEffect(category) {
         vm.filterCategory(category)
@@ -40,7 +43,11 @@ fun CategoryFilterScreen(
     )
     LazyColumn {
         items(vm.mealsByCategory){ meal ->
-            CategoryDetailsRow(meal.strMeal, onClick = {})
+            CategoryDetailsRow(
+                title = meal.strMeal,
+                onClick = {
+                    navController.navigate(Routes.mealDetails(meal.idMeal))
+                } )
         }
     }
 }

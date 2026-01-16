@@ -113,7 +113,7 @@ class MainActivity : ComponentActivity() {
                             arguments = listOf(navArgument("name") {type = NavType.StringType})
                         ) { backStackEntry ->
                             val name = backStackEntry.arguments?.getString("name").orEmpty()
-                            CategoryFilterScreen(category = name)
+                            CategoryFilterScreen(category = name, navController = navController)
 
                         }
                     }

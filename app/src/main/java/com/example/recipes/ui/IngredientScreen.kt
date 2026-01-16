@@ -87,7 +87,6 @@ fun IngredientsRow(title: String) {
             .fillMaxWidth()
             .padding(vertical = 4.dp)
             .clickable(onClick = {}),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically
         ) {
