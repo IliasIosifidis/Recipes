@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.recipes.data.remote.Meal
 import com.example.recipes.data.remote.MealApiFactory
 import kotlinx.coroutines.launch
+import retrofit2.http.Query
 
 class RecipesViewModel : ViewModel(){
 
@@ -23,14 +24,13 @@ class RecipesViewModel : ViewModel(){
     var meals by mutableStateOf<List<Meal>>(emptyList())
         private set
 
-    fun search(){
+    fun search(query: String){
         val q = query.trim()
         if (q.isEmpty()){
             errorMessage = "Type something to search"
             meals = emptyList()
             return
         }
-
         isLoading = true
         errorMessage = null
 
@@ -45,14 +45,5 @@ class RecipesViewModel : ViewModel(){
                 isLoading = false
             }
         }
-    }
-
-    fun onQueryChange(newValue: String){
-        query = newValue
-    }
-
-    fun cleanResults(){
-        meals = emptyList()
-        errorMessage = null
     }
 }

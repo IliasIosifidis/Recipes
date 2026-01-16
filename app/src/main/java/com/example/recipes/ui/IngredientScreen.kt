@@ -1,5 +1,6 @@
 package com.example.recipes.ui
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -26,6 +27,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.recipes.ui.viewmodel.IngredientViewModel
@@ -36,36 +39,49 @@ fun IngredientScreen(
     padding: PaddingValues,
     vm: IngredientViewModel = viewModel()
 ) {
-if (vm.ingredients.isEmpty() && !vm.isLoading){
-    vm.getIngredients()
-}
-when{
-    vm.isLoading ->
-        Column(
-            verticalArrangement = Arrangement.SpaceEvenly,
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.fillMaxSize()
-        ) {
-            Text("Loading categories")
-            CircularProgressIndicator()
-        }
-    vm.errorMessage !=null -> Text(
-        text = "Error ${vm.errorMessage}",
-        color = MaterialTheme.colorScheme.error)
-    else -> LazyColumn(
-        contentPadding = PaddingValues(vertical = 8.dp)
-        ) {
-            items(vm.ingredients){ingredient ->
-                IngredientsRow(title = ingredient.strIngredient)
+    if (vm.ingredients.isEmpty() && !vm.isLoading) {
+        vm.getIngredients()
+    }
+    when {
+        vm.isLoading ->
+            Column(
+                verticalArrangement = Arrangement.SpaceEvenly,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.fillMaxSize()
+            ) {
+                Text("Loading categories")
+                CircularProgressIndicator()
+            }
+
+        vm.errorMessage != null -> Text(
+            text = "Error ${vm.errorMessage}",
+            color = MaterialTheme.colorScheme.error
+        )
+
+        else -> {
+            Image(
+                painter = painterResource(com.example.recipes.R.drawable.ingredients),
+                contentDescription = null,
+                contentScale = ContentScale.FillHeight
+            )
+            LazyColumn(
+                contentPadding = PaddingValues(vertical = 8.dp)
+            ) {
+                items(vm.ingredients) { ingredient ->
+                    IngredientsRow(title = ingredient.strIngredient)
+                }
             }
         }
     }
 }
 
-
 @Composable
 fun IngredientsRow(title: String) {
     Card(
+        colors = CardDefaults.cardColors(
+        containerColor = Color(0xCE49B93D),
+        contentColor = Color.Black
+    ),
         modifier = Modifier
             .padding(horizontal = 16.dp)
             .fillMaxWidth()
