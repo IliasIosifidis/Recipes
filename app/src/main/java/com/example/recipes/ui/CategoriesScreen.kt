@@ -26,15 +26,17 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.R
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import com.example.recipes.Routes
 import com.example.recipes.ui.viewmodel.CategoryViewModel
 
 @Composable
 fun CategoriesScreen(
     modifier: Modifier,
     padding: PaddingValues,
-    vm: CategoryViewModel = viewModel()
+    vm: CategoryViewModel = viewModel(),
+    navController: NavHostController
 ) {
     if (vm.categories.isEmpty() && !vm.isLoading) {
         vm.getCategories()
@@ -65,8 +67,13 @@ fun CategoriesScreen(
             LazyColumn(
                 contentPadding = PaddingValues(vertical = 8.dp)
             ) {
-                items(vm.categories) { cat ->
-                    CategoryRow(title = cat.strCategory ?: "Unknown category")
+                items(vm.categories) { category ->
+                    CategoryRow(
+                        title = category.strCategory ?: "Unknown category",
+                        onClick = {
+                            navController.navigate(Routes.category(category.strCategory.toString()))
+                        }
+                        )
                 }
             }
         }
@@ -74,7 +81,7 @@ fun CategoriesScreen(
 }
 
 @Composable
-private fun CategoryRow(title: String) {
+private fun CategoryRow(title: String, onClick: () -> Unit) {
     Card(
         colors = CardDefaults.cardColors(
             containerColor = Color(0xCEB9753D),
@@ -84,7 +91,7 @@ private fun CategoryRow(title: String) {
             .padding(horizontal = 16.dp)
             .fillMaxWidth()
             .padding(vertical = 5.dp)
-            .clickable(onClick = {}),
+            .clickable(onClick = { onClick() }),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically

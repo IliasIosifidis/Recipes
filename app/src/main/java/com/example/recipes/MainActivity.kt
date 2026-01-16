@@ -6,6 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -14,7 +15,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -22,11 +25,13 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.recipes.ui.AreaScreen
 import com.example.recipes.ui.CategoriesScreen
+import com.example.recipes.ui.CategoryFilterScreen
 import com.example.recipes.ui.HomeScreen
 import com.example.recipes.ui.IngredientScreen
+import com.example.recipes.ui.MealDetailsScreen
 import com.example.recipes.ui.RecipesScreen
 import com.example.recipes.ui.theme.RecipesTheme
-import com.example.recipes.ui.viewmodel.RecipesViewModel
+import okhttp3.Route
 
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
@@ -36,18 +41,20 @@ class MainActivity : ComponentActivity() {
         setContent {
             RecipesTheme {
                 val navController = rememberNavController()
-
                 Scaffold(
                     topBar = {
                         TopAppBar(
+                            modifier = Modifier.fillMaxWidth(),
                             colors = TopAppBarDefaults.topAppBarColors(
-                                containerColor = MaterialTheme.colorScheme.primary,
-                                titleContentColor = MaterialTheme.colorScheme.onPrimary
+                                containerColor = Color(color = 0xFF5B2110),
+                                titleContentColor = Color(color = 0xFFFDE2D0),
+
                             ),
                             title = {
                                 Text(
-                                    text = "Home Screen",
-                                    textAlign = TextAlign.Center
+                                    text = "Recipes App",
+                                    textAlign = TextAlign.Center,
+                                    fontSize = 30.sp,
                                 )
                             },
                         )
@@ -70,7 +77,8 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                         composable(Routes.CATEGORIES) {
-                            CategoriesScreen(modifier = Modifier, padding = PaddingValues())
+                            CategoriesScreen(
+                                modifier = Modifier, padding = PaddingValues(),navController = navController)
                         }
                         composable(Routes.INGREDIENTS) {
                             IngredientScreen(modifier = Modifier, padding = PaddingValues())
@@ -78,6 +86,7 @@ class MainActivity : ComponentActivity() {
                         composable(Routes.COUNTRIES) {
                             AreaScreen(modifier = Modifier, padding = PaddingValues())
                         }
+                        // SEARCH FUNCTION
                         composable(
                             route = Routes.SEARCH,
                             arguments = listOf(navArgument("query") { type = NavType.StringType })
@@ -86,8 +95,26 @@ class MainActivity : ComponentActivity() {
                             RecipesScreen(
                                 modifier = Modifier,
                                 padding = PaddingValues(),
-                                query = query
+                                query = query,
+                                onMealClick = { id -> navController.navigate(Routes.mealDetails(id)) }
                             )
+                        }
+                        // MEAL DETAILS SCREEN
+                        composable(
+                            route = Routes.MEAL_DETAILS,
+                            arguments = listOf(navArgument("id") { type = NavType.StringType })
+                        ) { backStackEntry ->
+                                val id = backStackEntry.arguments?.getString(("id").orEmpty())
+                                MealDetailsScreen(mealId = id!!)
+                        }
+                        // MEALS AFTER THE CATEGORY CLICK
+                        composable(
+                            route = Routes.CATEGORY,
+                            arguments = listOf(navArgument("name") {type = NavType.StringType})
+                        ) { backStackEntry ->
+                            val name = backStackEntry.arguments?.getString("name").orEmpty()
+                            CategoryFilterScreen(category = name)
+
                         }
                     }
                 }
@@ -101,9 +128,14 @@ object Routes {
     const val CATEGORIES = "categories"
     const val INGREDIENTS = "ingredients"
     const val COUNTRIES = "countries"
+    const val MEAL_DETAILS = "meal/{id}"
+    fun mealDetails(id: String) = "meal/${Uri.encode(id)}"
 
     const val SEARCH = "search/{query}"
     fun search(query: String) = "search/${Uri.encode(query)}"
+
+    const val CATEGORY = "category/{name}"
+    fun category(name: String) = "category/${Uri.encode(name)}"
 }
 
 

@@ -2,7 +2,7 @@ package com.example.recipes.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -13,6 +13,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -22,39 +23,33 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.recipes.R
-import com.example.recipes.ui.viewmodel.RecipesViewModel
+import com.example.recipes.ui.viewmodel.CategoryMealsViewModel
 
 @Composable
-fun RecipesScreen(
-    modifier: Modifier,
-    padding: PaddingValues,
-    query: String,
-    onMealClick: (String) -> Unit,
-    vm: RecipesViewModel = viewModel()
-) {
-    LaunchedEffect(query) { vm.search(query) }
+fun CategoryFilterScreen(
+    category: String,
+    vm: CategoryMealsViewModel = viewModel()
+){
+    LaunchedEffect(category) {
+        vm.filterCategory(category)
+    }
     Image(
-        painter = painterResource(id = R.drawable.spoon),
+        painter = painterResource(com.example.recipes.R.drawable.home_screen_big),
         contentDescription = null,
         contentScale = ContentScale.FillHeight
     )
-    LazyColumn(contentPadding = PaddingValues(vertical = 8.dp)) {
-        items(vm.meals) { meal ->
-            MealRow(
-                title = meal.strMeal ?: "(no name)",
-                onClick = { onMealClick(meal.idMeal) }
-            )
+    LazyColumn {
+        items(vm.mealsByCategory){ meal ->
+            CategoryDetailsRow(meal.strMeal, onClick = {})
         }
     }
 }
 
-
 @Composable
-private fun MealRow(title: String, onClick: () -> Unit) {
+private fun CategoryDetailsRow(title: String, onClick: () -> Unit) {
     Card(
         colors = CardDefaults.cardColors(
-            containerColor = Color(0xCEE8DDDD),
+            containerColor = Color(0xCEB9753D),
             contentColor = Color.Black
         ),
         modifier = Modifier
@@ -63,35 +58,21 @@ private fun MealRow(title: String, onClick: () -> Unit) {
             .padding(vertical = 5.dp)
             .clickable(onClick = { onClick() }),
     ) {
-        Text(
-            text = title,
-            modifier = Modifier.padding(16.dp),
-            style = MaterialTheme.typography.titleMedium.copy(
-                shadow = Shadow(
-                    color = Color.Black,
-                    blurRadius = 3f,
-                    offset = Offset(3.0f, 3.0f)
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = title,
+                modifier = Modifier.padding(10.dp),
+                style = MaterialTheme.typography.titleMedium.copy(
+                    shadow = Shadow(
+                        color = Color.Black,
+                        blurRadius = 3f,
+                        offset = Offset(3.0f, 3.0f)
+                    ),
                 ),
-            ),
-            fontSize = (25.sp)
-        )
+                fontSize = (25.sp)
+            )
+        }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
