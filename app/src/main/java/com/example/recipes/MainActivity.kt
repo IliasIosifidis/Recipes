@@ -26,6 +26,7 @@ import androidx.navigation.navArgument
 import com.example.recipes.ui.AreaScreen
 import com.example.recipes.ui.CategoriesScreen
 import com.example.recipes.ui.CategoryFilterScreen
+import com.example.recipes.ui.CountryFilterScreen
 import com.example.recipes.ui.HomeScreen
 import com.example.recipes.ui.IngredientScreen
 import com.example.recipes.ui.MealDetailsScreen
@@ -84,7 +85,7 @@ class MainActivity : ComponentActivity() {
                             IngredientScreen(modifier = Modifier, padding = PaddingValues())
                         }
                         composable(Routes.COUNTRIES) {
-                            AreaScreen(modifier = Modifier, padding = PaddingValues())
+                            AreaScreen(modifier = Modifier, padding = PaddingValues(), navController = navController)
                         }
                         // SEARCH FUNCTION
                         composable(
@@ -114,7 +115,14 @@ class MainActivity : ComponentActivity() {
                         ) { backStackEntry ->
                             val name = backStackEntry.arguments?.getString("name").orEmpty()
                             CategoryFilterScreen(category = name, navController = navController)
-
+                        }
+                        // MEALS AFTER A COUNTRY CLICK
+                        composable(
+                            route = Routes.COUNTRY,
+                            arguments = listOf(navArgument("country") { type = NavType.StringType }),
+                        ){backStackEntry ->
+                            val country = backStackEntry.arguments?.getString("country").orEmpty()
+                            CountryFilterScreen(country = country, navController = navController)
                         }
                     }
                 }
@@ -131,11 +139,17 @@ object Routes {
     const val MEAL_DETAILS = "meal/{id}"
     fun mealDetails(id: String) = "meal/${Uri.encode(id)}"
 
+    // SEARCH CLICKABLE
     const val SEARCH = "search/{query}"
     fun search(query: String) = "search/${Uri.encode(query)}"
 
+    // CATEGORY CLICKABLE
     const val CATEGORY = "category/{name}"
     fun category(name: String) = "category/${Uri.encode(name)}"
+
+    // COUNTRY CLICKABLE
+    const val COUNTRY = "country/{country}"
+    fun countrySearch(country: String) = "country/${Uri.encode(country)}"
 }
 
 

@@ -60,7 +60,7 @@ fun CategoriesScreen(
 
         else -> {
             Image(
-                painter = painterResource(com.example.recipes.R.drawable.home_screen_big),
+                painter = painterResource(com.example.recipes.R.drawable.food_categories),
                 contentDescription = null,
                 contentScale = ContentScale.FillHeight
             )
@@ -73,7 +73,7 @@ fun CategoriesScreen(
                         onClick = {
                             navController.navigate(Routes.category(category.strCategory.toString()))
                         }
-                        )
+                    )
                 }
             }
         }
@@ -84,7 +84,7 @@ fun CategoriesScreen(
 private fun CategoryRow(title: String, onClick: () -> Unit) {
     Card(
         colors = CardDefaults.cardColors(
-            containerColor = Color(0xCEB9753D),
+            containerColor = Color(0xCEBB8F6B),
             contentColor = Color.Black
         ),
         modifier = Modifier

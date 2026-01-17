@@ -25,6 +25,9 @@ interface MealApi {
 
     @GET("lookup.php")
     suspend fun getMealDetails(@Query("i") id: String): MealsResponse
+
+    @GET("filter.php")
+    suspend fun filterByCountry(@Query("a") country: String) : MealsFilterResponse
 }
 
 //www.themealdb.com/api/json/v1/1/list.php?i=list

@@ -25,35 +25,35 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.recipes.Routes
-import com.example.recipes.ui.viewmodel.CategoryMealsViewModel
+import com.example.recipes.ui.viewmodel.CountryFilterViewModel
 
 @Composable
-fun CategoryFilterScreen(
-    category: String,
-    vm: CategoryMealsViewModel = viewModel(),
-    navController: NavHostController
+fun CountryFilterScreen(
+    country : String,
+    vm: CountryFilterViewModel = viewModel(),
+    navController : NavHostController
 ){
-    LaunchedEffect(category) {
-        vm.filterCategory(category)
+    LaunchedEffect(country) {
+        vm.filterCountry(country)
     }
     Image(
-        painter = painterResource(com.example.recipes.R.drawable.food_categories),
+        painter = painterResource(com.example.recipes.R.drawable.countries),
         contentDescription = null,
         contentScale = ContentScale.FillHeight
     )
     LazyColumn {
-        items(items = vm.mealsByCategory){ meal ->
-            CategoryDetailsRow(
-                title = meal.strMeal,
+        items(items = vm.countryResults){ area ->
+            CountryDetailsRow(
+                title = area.strMeal ?: "(no name)",
                 onClick = {
-                    navController.navigate(Routes.mealDetails(meal.idMeal))
-                } )
+                    navController.navigate(Routes.mealDetails(area.idMeal))
+            })
         }
     }
 }
 
 @Composable
-private fun CategoryDetailsRow(title: String, onClick: () -> Unit) {
+private fun CountryDetailsRow(title: String, onClick: () -> Unit) {
     Card(
         colors = CardDefaults.cardColors(
             containerColor = Color(0xCEBB8F6B),

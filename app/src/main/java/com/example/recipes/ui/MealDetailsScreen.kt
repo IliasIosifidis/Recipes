@@ -1,23 +1,16 @@
 package com.example.recipes.ui
 
-import android.R.attr.shape
-import android.content.Intent
-import android.net.Uri
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -81,7 +74,7 @@ fun MealDetailsScreen(
                     .verticalScroll(scrollState)
             ){
                 Text(text = m.strMeal ?: "",style = MaterialTheme.typography.titleLarge)
-                Divider(color = Color(0xE4FFFFFF))
+                HorizontalDivider(color = Color(0xE4FFFFFF))
                 Text("Ingredients: ",style = MaterialTheme.typography.titleLarge)
                 vm.meal?.ingredientsWithMeasures()?.forEach { line ->
                     Text(
@@ -90,10 +83,10 @@ fun MealDetailsScreen(
                         modifier = Modifier.padding(vertical = 2.dp)
                     )
                 }
-                Divider(color = Color(0xE4FFFFFF))
+                HorizontalDivider(color = Color(0xE4FFFFFF))
                 Text("Instructions: ",style = MaterialTheme.typography.titleLarge)
                 Text(text = "Instructions ${m.strInstructions}")
-                Divider(color = Color(0xE4FFFFFF))
+                HorizontalDivider(color = Color(0xE4FFFFFF))
                 Text(text = "Country of origin ${vm.meal?.strArea}")
             }
         }
