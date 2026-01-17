@@ -9,9 +9,7 @@ import com.example.recipes.data.remote.MealApiFactory
 import com.example.recipes.data.remote.MealPreview
 import kotlinx.coroutines.launch
 
-class CountryFilterViewModel : ViewModel() {
-    var countryResults by mutableStateOf<List<MealPreview>>(emptyList())
-        private set
+class IngredientFilterViewModel : ViewModel () {
 
     var isLoading by mutableStateOf(false)
         private set
@@ -19,14 +17,17 @@ class CountryFilterViewModel : ViewModel() {
     var errorMessage by mutableStateOf<String?>(null)
         private set
 
-    fun filterCountry(county: String){
-        isLoading = true
+    var ingredientFilterResult by mutableStateOf<List<MealPreview>>(emptyList())
+        private set
+
+    fun filterIngredient(ingredient: String){
         errorMessage = null
+        isLoading = false
 
         viewModelScope.launch {
             try {
-                val res = MealApiFactory.api.filterByCountry(county)
-                countryResults = res.meals.orEmpty()
+                val res = MealApiFactory.api.filterByIngredients(ingredient = ingredient)
+                ingredientFilterResult = res.meals.orEmpty()
             } catch (e: Exception){
                 errorMessage = e.message
             } finally {

@@ -2,6 +2,7 @@ package com.example.recipes.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -25,35 +26,37 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.recipes.navigation.Routes
-import com.example.recipes.ui.viewmodel.CountryFilterViewModel
+import com.example.recipes.ui.viewmodel.IngredientFilterViewModel
 
 @Composable
-fun CountryFilterScreen(
-    country : String,
-    vm: CountryFilterViewModel = viewModel(),
-    navController : NavHostController
-){
-    LaunchedEffect(country) {
-        vm.filterCountry(country)
+fun IngredientFilterScreen(
+    ingredient: String,
+    navController: NavHostController,
+    vm: IngredientFilterViewModel = viewModel()
+) {
+    LaunchedEffect(ingredient) {
+        vm.filterIngredient(ingredient)
     }
+
     Image(
-        painter = painterResource(com.example.recipes.R.drawable.countries),
+        painter = painterResource(com.example.recipes.R.drawable.ingredients),
         contentDescription = null,
         contentScale = ContentScale.FillHeight
     )
     LazyColumn {
-        items(items = vm.countryResults){ area ->
-            CountryDetailsRow(
-                title = area.strMeal ?: "(no name)",
+        items(vm.ingredientFilterResult){ ingredient ->
+            IngredientDetailsRow(
+                title = ingredient.strMeal,
                 onClick = {
-                    navController.navigate(Routes.mealDetails(area.idMeal))
-            })
+                    navController.navigate(Routes.mealDetails(ingredient.idMeal))
+                }
+            )
         }
     }
 }
 
 @Composable
-private fun CountryDetailsRow(title: String, onClick: () -> Unit) {
+private fun IngredientDetailsRow(title: String, onClick: () -> Unit) {
     Card(
         colors = CardDefaults.cardColors(
             containerColor = Color(0xCEBB8F6B),

@@ -31,13 +31,16 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import com.example.recipes.navigation.Routes
 import com.example.recipes.ui.viewmodel.IngredientViewModel
 
 @Composable
 fun IngredientScreen(
     modifier: Modifier,
     padding: PaddingValues,
-    vm: IngredientViewModel = viewModel()
+    vm: IngredientViewModel = viewModel(),
+    navController: NavHostController
 ) {
     if (vm.ingredients.isEmpty() && !vm.isLoading) {
         vm.getIngredients()
@@ -68,7 +71,12 @@ fun IngredientScreen(
                 contentPadding = PaddingValues(vertical = 8.dp)
             ) {
                 items(vm.ingredients) { ingredient ->
-                    IngredientsRow(title = ingredient.strIngredient)
+                    IngredientsRow(
+                        title = ingredient.strIngredient,
+                        onClick = {
+                            navController.navigate(Routes.ingredientSearch(ingredient.strIngredient))
+                        }
+                    )
                 }
             }
         }
@@ -76,19 +84,20 @@ fun IngredientScreen(
 }
 
 @Composable
-fun IngredientsRow(title: String) {
+fun IngredientsRow(title: String, onClick: () -> Unit) {
     Card(
         colors = CardDefaults.cardColors(
-        containerColor = Color(0xCE49B93D),
-        contentColor = Color.Black
-    ),
+            containerColor = Color(0xCE49B93D),
+            contentColor = Color.Black
+        ),
         modifier = Modifier
             .padding(horizontal = 16.dp)
             .fillMaxWidth()
             .padding(vertical = 4.dp)
-            .clickable(onClick = {}),
+            .clickable(onClick = { onClick() }),
     ) {
-        Row(verticalAlignment = Alignment.CenterVertically
+        Row(
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
                 text = title,

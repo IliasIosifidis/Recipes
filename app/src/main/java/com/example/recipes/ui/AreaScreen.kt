@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import com.example.recipes.Routes
+import com.example.recipes.navigation.Routes
 import com.example.recipes.ui.viewmodel.AreaViewModel
 
 @Composable

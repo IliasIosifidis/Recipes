@@ -23,16 +23,17 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.recipes.navigation.Routes
 import com.example.recipes.ui.AreaScreen
 import com.example.recipes.ui.CategoriesScreen
 import com.example.recipes.ui.CategoryFilterScreen
 import com.example.recipes.ui.CountryFilterScreen
 import com.example.recipes.ui.HomeScreen
+import com.example.recipes.ui.IngredientFilterScreen
 import com.example.recipes.ui.IngredientScreen
 import com.example.recipes.ui.MealDetailsScreen
 import com.example.recipes.ui.RecipesScreen
 import com.example.recipes.ui.theme.RecipesTheme
-import okhttp3.Route
 
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
@@ -82,7 +83,7 @@ class MainActivity : ComponentActivity() {
                                 modifier = Modifier, padding = PaddingValues(),navController = navController)
                         }
                         composable(Routes.INGREDIENTS) {
-                            IngredientScreen(modifier = Modifier, padding = PaddingValues())
+                            IngredientScreen(modifier = Modifier, padding = PaddingValues(), navController = navController)
                         }
                         composable(Routes.COUNTRIES) {
                             AreaScreen(modifier = Modifier, padding = PaddingValues(), navController = navController)
@@ -124,6 +125,15 @@ class MainActivity : ComponentActivity() {
                             val country = backStackEntry.arguments?.getString("country").orEmpty()
                             CountryFilterScreen(country = country, navController = navController)
                         }
+                        // MEALS AFTER THE INGREDIENT CLICK
+                        composable(
+                            route = Routes.INGREDIENT,
+                            arguments = listOf(navArgument("ingredient") {type = NavType.StringType})
+                        ) {backStackEntry ->
+                            val ingredient = backStackEntry.arguments?.getString("ingredient").orEmpty()
+                            IngredientFilterScreen(ingredient = ingredient, navController = navController)
+
+                        }
                     }
                 }
             }
@@ -131,27 +141,11 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-object Routes {
-    const val HOME = "home"
-    const val CATEGORIES = "categories"
-    const val INGREDIENTS = "ingredients"
-    const val COUNTRIES = "countries"
-    const val MEAL_DETAILS = "meal/{id}"
-    fun mealDetails(id: String) = "meal/${Uri.encode(id)}"
 
-    // SEARCH CLICKABLE
-    const val SEARCH = "search/{query}"
-    fun search(query: String) = "search/${Uri.encode(query)}"
 
-    // CATEGORY CLICKABLE
-    const val CATEGORY = "category/{name}"
-    fun category(name: String) = "category/${Uri.encode(name)}"
-
-    // COUNTRY CLICKABLE
-    const val COUNTRY = "country/{country}"
-    fun countrySearch(country: String) = "country/${Uri.encode(country)}"
+sealed class Dest(val route: String){
+    data object Home: Dest("home")
 }
-
 
 
 
