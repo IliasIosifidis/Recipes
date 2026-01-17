@@ -1,6 +1,5 @@
 package com.example.recipes
 
-import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -44,6 +43,7 @@ class MainActivity : ComponentActivity() {
             RecipesTheme {
                 val navController = rememberNavController()
                 Scaffold(
+
                     topBar = {
                         TopAppBar(
                             modifier = Modifier.fillMaxWidth(),
@@ -61,7 +61,7 @@ class MainActivity : ComponentActivity() {
                             },
                         )
                     },
-                    containerColor = MaterialTheme.colorScheme.background
+                    containerColor = MaterialTheme.colorScheme.background,
                 ) { innerPadding ->
                     NavHost(
                         navController = navController,
@@ -140,32 +140,3 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
-
-
-sealed class Dest(val route: String){
-    data object Home: Dest("home")
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
