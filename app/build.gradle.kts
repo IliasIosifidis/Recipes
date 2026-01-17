@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.recipes"
+    namespace = "com.ilias.recipes"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.example.recipes"
+        applicationId = "com.ilias.recipes"
         minSdk = 24
         targetSdk = 35
         versionCode = 1
