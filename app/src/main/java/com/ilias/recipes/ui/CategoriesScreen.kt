@@ -67,11 +67,11 @@ fun CategoriesScreen(
             LazyColumn(
                 contentPadding = PaddingValues(vertical = 8.dp)
             ) {
-                items(vm.categories) { category ->
+                items(vm.categories) {
                     CategoryRow(
-                        title = category.strCategory ?: "Unknown category",
+                        title = it.strCategory ?: "Unknown category",
                         onClick = {
-                            navController.navigate(Routes.category(category.strCategory.toString()))
+                            navController.navigate(Routes.category(it.strCategory.toString()))
                         }
                     )
                 }
